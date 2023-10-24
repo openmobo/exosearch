@@ -1,0 +1,44 @@
+import { createWebHistory, createRouter } from "vue-router"
+import Home from './components/Home.vue'
+import Result from './components/Result.vue'
+import SideBar from './components/SideBar.vue'
+import Upload from './components/Upload.vue'
+
+
+
+const routes =[{
+
+    name: 'Home',
+    path: '/',
+    component: Home
+
+},
+ {   name: 'Result',
+    path: '/result',
+    component: Result
+
+},
+ {   name: 'SideBar',
+    path: '/sidebar',
+    component: SideBar
+
+},
+{
+    name: 'Upload',
+    path: '/upload',
+    component: Upload
+
+},
+
+
+
+];
+
+
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+});
+
+export default router;
