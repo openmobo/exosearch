@@ -3,7 +3,7 @@ import Home from './components/Home.vue'
 import Result from './components/Result.vue'
 import SideBar from './components/SideBar.vue'
 import Upload from './components/Upload.vue'
-
+import Login from './components/Login.vue'
 
 
 const routes =[{
@@ -29,6 +29,12 @@ const routes =[{
     component: Upload
 
 },
+
+{
+    name: 'Login',
+    path: '/login',
+    component: Login
+}
 
 
 

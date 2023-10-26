@@ -1,10 +1,27 @@
 <template>
+
+
     <!-- The main container for the component -->
     <div class="home">
       <v-toolbar flat>
         <v-toolbar-title>
           <span class="caption">Overview Dashboard</span><br>
+          
+          <!-- testing -->
+          <h5>{{ message }}</h5>
+
+         
         </v-toolbar-title>
+
+        <v-toolbar-items>
+        <!-- Conditional rendering based on authentication status -->
+        <template v-if="!authStore.authenticated">
+          <v-btn @click="login">Login</v-btn>
+        </template>
+        <template v-else>
+          <v-btn @click="logout">Logout</v-btn>
+        </template>
+      </v-toolbar-items>
   
         <!-- logo -->
         
@@ -128,14 +145,79 @@
   
   
   <script>
-  
-  export default {
-    name: 'Home',
-    data: () => ({
-      
-    })
+import { onMounted, ref } from 'vue';
+import { useAuthStore } from '../stores/auth'; // Import the Pinia store
+
+export default {
+  name: 'Home',
+  setup() {
+    const message = ref('You are not logged in!');
+    const authStore = useAuthStore(); // Use the Pinia store
+
+    onMounted(async () => {
+  try {
+    const response = await fetch('http://127.0.0.1:8000/user', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
+
+    if (response.status === 200) {
+      console.log("Success");
+      const content = await response.json();
+      message.value = `Hi ${content.name}`;
+      authStore.setAuth(true);
+    } else {
+      authStore.setAuth(false);
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    authStore.setAuth(false);
   }
-  </script>
+});
+
+    return {
+      message, authStore
+    };
+  },
+
+  methods: {
+
+    login(){
+
+this.$router.push('/login');
+
+    },
+
+async logout(){
+
+try {
+
+      const authStore = useAuthStore();
+      // Send a logout request to your backend API
+      const response = await fetch('http://127.0.0.1:8000/logout', {
+        method: 'POST',
+        credentials: 'include', // Include cookies in the request
+      });
+
+      if (response.status === 200) {
+        
+        authStore.setAuth(false); 
+
+        console.log("heya i am logged out");
+        this.$router.push('/login');
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+
+  }
+  }
+};
+</script>
+
+  
+ 
   
   <style scoped>
   .border {
