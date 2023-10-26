@@ -216,10 +216,11 @@ try {
 };
 </script>
 
-  
+
  
-  
   <style scoped>
+
+
   .border {
     border-right: 1px solid grey
   }
