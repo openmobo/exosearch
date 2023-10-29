@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from.models import  LogUpload
-from .models import ForwarderData, User
+from .models import ForwarderData, User, APIKey
 #due to erroor of object
 # from rest_meets_djongo.serializers import DjongoModelSerializer    
 
@@ -15,10 +15,17 @@ class LogUploadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class APIKeySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = APIKey
+        fields = '__all__' 
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'name', 'email', 'password']
+        fields = ['id', 'name','role', 'email', 'password']
 
         #how to hide the password
         extra_kwargs = {

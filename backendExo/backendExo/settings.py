@@ -41,6 +41,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# AUTHENTICATION_CLASSES = (
+#     'rest_framework.authentication.SessionAuthentication',
+#     # Add other authentication classes as needed
+# )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,  # Set the number of items per page
+}
+
+
+
 ROOT_URLCONF = 'backendExo.urls'
 
 TEMPLATES = [
