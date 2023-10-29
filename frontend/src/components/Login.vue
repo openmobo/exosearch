@@ -1,7 +1,6 @@
 <template>
   
-    
-  
+
   
   <div class="login-container">
     <div class="login-form">
@@ -36,6 +35,13 @@
           required
           class="input-field"
         />
+
+        <div v-if="tab === 'register'">
+  <select v-model="formData.role" class="input-field">
+    <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+  </select>
+</div>
+
         <button @click="authAction" type="submit" class="submit-button">
           {{ tab === 'login' ? 'Login' : 'Register' }}
         </button>
@@ -59,7 +65,10 @@
           name: '',
           email: '',
           password: '',
+          role: 'admin',
         },
+
+        roles: ['admin', 'role1', 'role2'], // Available roles
         
       };
     },

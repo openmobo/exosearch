@@ -197,10 +197,13 @@ try {
       // Send a logout request to your backend API
       const response = await fetch('http://127.0.0.1:8000/logout', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include', // Include cookies in the request
       });
 
       if (response.status === 200) {
+
+        console.log(response);
         
         authStore.setAuth(false); 
 
