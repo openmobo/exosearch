@@ -17,6 +17,8 @@ from rest_framework import pagination
 from django.utils.dateparse import parse_date
 import re
 from datetime import datetime as datetimestamp
+from django.contrib.auth import authenticate
+
 
 
 
@@ -39,7 +41,34 @@ class APIKeyViewSet(viewsets.ModelViewSet):
         return APIKey.objects.filter(user=user, is_user_key=True)
 
 
+class change_password(APIView): 
+    def post(self, request):
+        email = request.data['email']
+        current_password = request.data['currentPassword']
+        confirmed_password = request.data['password']
 
+        print(email)
+        print(confirmed_password)
+        print(current_password)
+
+        
+        user = User.objects.filter(email=email).first()
+        print(user)
+
+        if user is None:
+            raise AuthenticationFailed("User not found!")
+
+        # Authenticate the user using the current password
+        if not authenticate(request, username=email, password=current_password):
+            raise AuthenticationFailed("Incorrect current password")
+
+        # Change the user's password
+        user.set_password(confirmed_password)
+        user.save()
+
+
+        return Response({"message": "Password changed successfully"}, status=status.HTTP_200_OK)
+   
 
 
 #register and login part start from here
@@ -53,6 +82,8 @@ class RegisterView(APIView):
        
         serializer.save()
         return Response(serializer.data)
+
+
 
 
 class LoginView(APIView):
@@ -72,7 +103,7 @@ class LoginView(APIView):
                 
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),    #we will keep this token for 1 hours
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=240),    #we will keep this token for 4 hours
             'iat': datetime.datetime.utcnow()   #date when token is created
         }
 
