@@ -27,20 +27,24 @@
         <v-btn @click="searchLogs" class="custom-button">Search</v-btn>
       </div>
 
-    <!-- Display Search Results -->
-    <!-- <div class="search-results">
-      <h3>Search Results</h3>
-      <ul>
-        <li v-for="log in items" :key="log.id">
-          <b>{{ log.file_name }}</b> - {{ log.log_data }}
-        </li>
-      </ul>
-    </div> -->
+  
     </div>
 
     <div class="search-results">
       <h3>Search Results</h3>
+     
+      <select v-model="selectedFile" class="input-field" @change="filenameSelected">
+        <option value="" disabled selected>Please select a file</option>
+      <option v-for="item in items" :key="item" :value="item">{{ item.file_name }}</option>
+       </select>
+
+
+
+
+
+
       <table class="table table-bordered">
+        
         <thead>
           <tr>
             <th>File Name</th>
@@ -49,29 +53,38 @@
             <th>Log Data</th>
           </tr>
         </thead>
+
+
+      
+
+
         <tbody>
             <tr v-for="(log, logIndex) in paginatedItems" :key="logIndex">
-              <td>{{ log.file_name }}</td>
+             
+              <td>{{ selectedFile.file_name }}</td>
               <td>
-                <div class="table-margin" v-for="(logEntry, entryIndex) in log.log_data" :key="entryIndex">
-                  {{ formatDate(logEntry.log_datetime) }}
-                </div>
+               
+                  {{ formatDate(log.log_datetime) }}
+             
               </td>
               <td>
-                <div class="table-margin" v-for="(logEntry, entryIndex) in log.log_data" :key="entryIndex">
-                  {{ formatTime(logEntry.log_datetime) }}
-                </div>
+               
+                  {{ formatTime(log.log_datetime) }}
+                
               </td>
               <td>
-                <div class="table-margin" v-for="(logEntry, entryIndex) in log.log_data" :key="entryIndex">
-                  {{ logEntry.log_data }}
-                </div>
+               
+                  {{ log.log_data }}
+             
               </td>
             </tr>
           </tbody>
+       
+       
       </table>
 
-      <pagination :data="items" @pagination-change-page="pageChanged" :limit="perPage" :pagination="pagination"></pagination>
+      <pagination v-model="page" :records="totalItems" :per-page="perPage" @paginate="pageChanged"/>
+      
     </div>
   </div>
 </template>
@@ -83,13 +96,14 @@ import 'bootstrap-datepicker';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import VuejsPaginate from 'vuejs-paginate';
+import Pagination from 'v-pagination-3';
 
 let email;
+let i;
 
 export default {
   components: {
-    VuejsPaginate,
+    Pagination,
   },
 
   data() {
@@ -100,9 +114,11 @@ export default {
       items: [],
       paginatedItems: [],
       page: 1,
-      perPage: 100,
+      perPage: 5,
       totalItems: 0,
       pageCount: 0,
+      selectedFile:'',
+      totalItemData:[],
     };
   },
 
@@ -152,19 +168,31 @@ export default {
         .then((response) => {
           this.items = response.data;
           console.log(this.items);
-          this.totalItems = this.items.length;
-          this.pageCount = Math.ceil(this.totalItems / this.perPage);
-          this.page = 1;
-          this.paginateItems();
+          
+          
         })
         .catch((error) => {
           console.error('Error searching logs', error);
         });
     },
 
+    filenameSelected(){
+
+     console.log(this.selectedFile);
+     this.totalItems = this.selectedFile.log_data.length;
+
+     this.pageCount = Math.ceil(this.totalItems / this.perPage);
+          this.page = 1;
+          this.paginateItems();
+
+
+    },
+
     paginateItems() {
       const startIndex = (this.page - 1) * this.perPage;
-      this.paginatedItems = this.items.slice(startIndex, startIndex + this.perPage);
+      console.log(this.selectedFile)
+      this.paginatedItems = this.selectedFile.log_data.slice(startIndex, startIndex + this.perPage);
+      
     },
 
     pageChanged(page) {
@@ -213,5 +241,14 @@ export default {
 }
 .table-margin{
   margin-bottom: 30px;
+}
+
+.input-field {
+  width: 30%;
+  padding: 12px;
+  margin: 10px, 0px ;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 </style>
