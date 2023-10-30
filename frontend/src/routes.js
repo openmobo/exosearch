@@ -4,6 +4,7 @@ import Result from './components/Result.vue'
 import SideBar from './components/SideBar.vue'
 import Upload from './components/Upload.vue'
 import Login from './components/Login.vue'
+import changePass from './components/changePass.vue'
 
 
 const routes =[{
@@ -34,7 +35,12 @@ const routes =[{
     name: 'Login',
     path: '/login',
     component: Login
-}
+},
+{
+    name: 'changePass',
+    path: '/changePass',
+    component: changePass
+},
 
 
 

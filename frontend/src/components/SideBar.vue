@@ -60,6 +60,7 @@ export default {
             {text: 'Dashboard', route: '/'},
             { text: 'Upload File', route: '/upload'},
             { text: 'Result', route: '/result'},
+            { text: 'Change Password', route: '/changepass'},
 
         ]
         })

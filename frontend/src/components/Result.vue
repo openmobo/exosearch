@@ -215,13 +215,9 @@ export default {
         if (response.status === 200) {
           const content = await response.json();
           email = content.email;
-          authStore.setAuth(true);
-        } else {
-          authStore.setAuth(false);
-        }
+        } 
       } catch (error) {
         console.error('Error fetching user data:', error);
-        authStore.setAuth(false);
       }
     });
   },
@@ -238,9 +234,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.table-margin{
-  margin-bottom: 30px;
 }
 
 .input-field {
