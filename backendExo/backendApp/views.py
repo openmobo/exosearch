@@ -306,9 +306,19 @@ class dataViewSet(APIView):
 
         }
         if user.role == "admin":
-            forwarder_serializer = ForwarderDataSerializer(data=forwarder_data)
-            if forwarder_serializer.is_valid():
-                forwarder_serializer.save()
-                return Response({'message': 'log uploaded successfully'}, status=status.HTTP_201_CREATED)
-        return Response(forwarder_serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+            forwarder, created = ForwarderData.objects.get_or_create(
+                file_name=forwarder_data['file_name'],
+                email=forwarder_data['email'],
+                host=forwarder_data['host'],
+                defaults={'log_data': forwarder_data['log_data']}
+            )
+
+            if not created:
+                # If the entry already exists, update it
+                forwarder.log_data = forwarder_data['log_data']
+                forwarder.save()
+
+            return Response({'message': 'Log uploaded successfully'}, status=201)
+
+        return Response({'error': 'Unauthorized or invalid user'}, status=403)    
     

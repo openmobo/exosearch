@@ -1,5 +1,6 @@
 import os
 from urllib.parse import quote_plus
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -82,6 +83,14 @@ DATABASES = {
         'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.unqlite',
+#         'NAME': str(BASE_DIR / 'unsqlite.db'),       
+#           # Set the path to your UnQLite database file
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
