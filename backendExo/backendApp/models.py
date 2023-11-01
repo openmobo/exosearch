@@ -28,9 +28,3 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-
-class APIKey(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    key = models.CharField(max_length=255)
-    key_name = models.CharField(max_length=255)
-    is_forwarder = models.BooleanField(default=False)

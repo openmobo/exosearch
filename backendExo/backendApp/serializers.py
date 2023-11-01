@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from.models import  LogUpload
-from .models import ForwarderData, User, APIKey
+from .models import ForwarderData, User
 #due to erroor of object
 # from rest_meets_djongo.serializers import DjongoModelSerializer    
 
@@ -13,12 +13,7 @@ class LogUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogUpload
         fields = '__all__'
-
-
-class APIKeySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = APIKey
-        fields = '__all__' 
+ 
 
 
 

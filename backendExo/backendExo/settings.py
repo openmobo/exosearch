@@ -15,7 +15,10 @@ SECRET_KEY = 'django-insecure-w(x1nxyk5&g+4p+c$z%2mr556j74r_y2jziewh7dm^4f%ebou(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
+
+
 
 # Application definition
 
@@ -77,12 +80,12 @@ WSGI_APPLICATION = 'backendExo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': str(BASE_DIR / 'db.sqlite3'),
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -104,6 +107,32 @@ DATABASES = {
 #             'authMechanism': 'SCRAM-SHA-1',
 #         }
 #     }
+# }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'exosearch',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': 'mongodb+srv://{}:{}@cluster0.thkgomd.mongodb.net/'.format(
+                quote_plus('Ashher3265'),
+                quote_plus('Ashher3265@')
+            ),
+        }
+    }
+}
+
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'exosearch',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 # 'host': 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority'
+#                 'host':  'mongodb+srv://Ashher3265:Ashher3265@>@cluster0.thkgomd.mongodb.net/'
+#             }  
+#         }
 # }
 
 # Password validation

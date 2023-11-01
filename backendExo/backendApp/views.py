@@ -7,38 +7,16 @@ from backendApp.serializers import LogUploadSerializer
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import LogUpload, ForwarderData, User, APIKey
-from .serializers import LogUploadSerializer, ForwarderDataSerializer, UserSerializer, APIKeySerializer
+from .models import LogUpload, ForwarderData, User
+from .serializers import LogUploadSerializer, ForwarderDataSerializer, UserSerializer
 from rest_framework import status
 import jwt, datetime
-from django.http import HttpRequest
-from rest_framework.pagination import PageNumberPagination
-from rest_framework import pagination
+
 from django.utils.dateparse import parse_date
 import re
 from datetime import datetime as datetimestamp
 from django.contrib.auth import authenticate
 
-
-
-
-class APIKeyViewSet(viewsets.ModelViewSet):
-    queryset = APIKey.objects.all()
-    serializer_class = APIKeySerializer
-    # permission_classes = [permissions.IsAuthenticated]
-
-    # user = User.objects.filter(email=email).first()
-
-    # def perform_create(self, serializer):
-    #     # Automatically set the user of the API key to the currently authenticated user.
-    #     print(self.request.user)
-    #     serializer.save(user=self.request.user)
-
-    def get_queryset(self):
-        user = self.request.user
-        if user.roles.filter(name='admin').exists():
-            return APIKey.objects.all()
-        return APIKey.objects.filter(user=user, is_user_key=True)
 
 
 class change_password(APIView): 
