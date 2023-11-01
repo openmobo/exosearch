@@ -94,14 +94,26 @@ import $ from 'jquery';
 import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
 import 'bootstrap-datepicker';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import { useAuthStore } from '../stores/auth';
 import Pagination from 'v-pagination-3';
-
+import { useAuthSetup } from '../recall function/authsetup'
 let email;
-let i;
 
 export default {
+ 
+
+  setup() {
+    const { authStore, fetchData } = useAuthSetup();
+
+    // Call fetchData to fetch and set authentication data
+    fetchData();
+
+   
+
+    return {
+      authStore,
+    };
+  },
+
   components: {
     Pagination,
   },
@@ -163,6 +175,8 @@ export default {
 
 
     searchLogs() {
+      email = this.authStore.email;
+
       axios
         .get(`http://127.0.0.1:8000/forwarder-data/?query=${this.searchQuery}&email=${email}&from=${this.fromDate}&to=${this.toDate}`)
         .then((response) => {
@@ -201,26 +215,7 @@ export default {
     },
   },
 
-  setup() {
-    const authStore = useAuthStore();
-
-    onMounted(async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/user', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-        });
-
-        if (response.status === 200) {
-          const content = await response.json();
-          email = content.email;
-        } 
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    });
-  },
+  
 };
 </script>
 

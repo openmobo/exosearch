@@ -32,16 +32,19 @@
   
         <!-- The user profile section -->
         <template v-slot:append>
-          <div class="pa-2">
+          <div class="pa-2 padding-profile">
             <v-card align="center" class="pa-3">
               <v-badge bordered bottom color="green" dot offset-x="10" offset-y="10" class="mb-8">
                 <v-avatar size="120">
                   <v-img src="https://cdn-icons-png.flaticon.com/512/8214/8214212.png"></v-img>
                 </v-avatar>
               </v-badge>
-              <h4 class="grey--text">Logged in</h4>
-              <h5 class="green--text">Your Name</h5>
-              <v-btn depressed color="primary">Log Out</v-btn>
+
+              <h4  v-if="authStore.authenticated" class="green--text">Hi {{ authStore.name }}</h4>
+              <h4 v-else class="green--text">Please Log in</h4>
+              
+              <v-btn @click="logout" v-if="authStore.authenticated" depressed color="primary">Log Out</v-btn>
+              <v-btn href='/login' v-else depressed color="primary">Log in</v-btn>
             </v-card>
           </div>
         </template>
@@ -51,8 +54,24 @@
   
   
 <script>
+
+import { useAuthSetup } from '../recall function/authsetup'
+
 export default {
-    
+ 
+
+  setup() {
+    const { authStore, fetchData } = useAuthSetup();
+
+    // Call fetchData to fetch and set authentication data
+    fetchData();
+
+    return {
+      authStore,
+    };
+  },
+
+
     data: () => ({
         selectedItem: 0,
         drawer: false,
@@ -63,7 +82,36 @@ export default {
             { text: 'Change Password', route: '/changepass'},
 
         ]
-        })
+        }),
+
+      
+
+        methods: {
+
+async logout(){
+
+try {
+  // Send a logout request to your backend API
+  const response = await fetch('http://127.0.0.1:8000/logout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // Include cookies in the request
+  });
+
+  if (response.status === 200) {
+
+    console.log(response);
+    
+    this.$router.push('/login');
+  }
+} catch (error) {
+  console.error('Logout failed:', error);
+}
+
+}
+}
+
+        
 }
 </script>
 <style scoped>
@@ -78,6 +126,11 @@ export default {
 
 .sidetext{
   margin-left: 15px;
+}
+
+.padding-profile{
+
+  margin-bottom: 250px;
 }
 
 

@@ -44,11 +44,24 @@
   </template>
     
     <script>
-    import { onMounted, ref } from 'vue';
+    import { useAuthSetup } from '../recall function/authsetup'
+let email;
+
+export default {
+ 
+
+  setup() {
+    const { authStore, fetchData } = useAuthSetup();
+
+    // Call fetchData to fetch and set authentication data
+    fetchData();
+
     
-    let email;
-    
-    export default {
+
+    return {
+      authStore,
+    };
+  },
       data() {
         
         return {
@@ -64,6 +77,8 @@
       methods: {
        
         async submitForm() {
+
+          email = this.authStore.email;
            
             
 
@@ -99,27 +114,6 @@
    
         },
       },
-
-
-      setup() {
-
-    onMounted(async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/user', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-        });
-
-        if (response.status === 200) {
-          const content = await response.json();
-          email = content.email;
-        } 
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    });
-  },
 
     };
     </script>
