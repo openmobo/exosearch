@@ -95,20 +95,6 @@ WSGI_APPLICATION = 'backendExo.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'CLIENT': {
-#             'host': 'mongodb+srv://{}:{}@cluster0.ma0gpom.mongodb.net/exosearch?retryWrites=true&w=majority'.format(
-#                 quote_plus('Ashher3265'),
-#                 quote_plus('Ashher3265@')
-#             ),
-#             'name': 'exosearch',
-#             'authMechanism': 'SCRAM-SHA-1',
-#         }
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
@@ -116,24 +102,12 @@ DATABASES = {
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
             'host': 'mongodb+srv://{}:{}@cluster0.thkgomd.mongodb.net/'.format(
-                quote_plus('Ashher3265'),
-                quote_plus('Ashher3265@')
+                quote_plus('username'),
+                quote_plus('password')
             ),
         }
     }
 }
-
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'djongo',
-#             'NAME': 'exosearch',
-#             'ENFORCE_SCHEMA': False,
-#             'CLIENT': {
-#                 # 'host': 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority'
-#                 'host':  'mongodb+srv://Ashher3265:Ashher3265@>@cluster0.thkgomd.mongodb.net/'
-#             }  
-#         }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
